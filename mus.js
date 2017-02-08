@@ -38,20 +38,17 @@
         }
     }
 
-    const Duration = function() {
-
+    const Duration = function(dur) {
+      var valid = ['W', 'H', 'Q', 'E', 'S', 'T'];
     }
 
-    const Note = function(letterOct, duration) {
+    const Note = function(letterOct = 'c4', duration) {
         if (!(this instanceof Note)) {
             return new Note(letterOct, duration);
         }
-        if (letterOct !== undefined) {
-            var octave = parseInt(letterOct.split('').slice(-1)[0]);
-            var name = letterOct.split(/\d/g)[0];
-        } else {
-          throw "Needs a proper note name";
-        }
+
+        var octave = parseInt(letterOct.split(/\D/g).slice(-1));
+        var name = letterOct.split(/\d/g)[0];
 
         this.letter = Number.isNaN(octave) ? Letter(name) : Letter(name, octave);
         this.duration = duration;
@@ -65,8 +62,6 @@
         return this.letter.pc;
     }
 
-    var g = new Note('b');
-    console.log(g.pitchClass());
 
 
 
