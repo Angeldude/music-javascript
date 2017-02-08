@@ -26,10 +26,16 @@
     }
 
     this.letter = Letter(letter, octave);
+    this.duration = duration;
   }
 
-  var g = new Note('c', 5, 'w')
-  console.log(g);
+  Note.prototype.noteName = function(){
+    return this.letter.letter;
+  }
+
+  Note.prototype.pitchClass = function(){
+    return this.letter.pc;
+  }
 
 
 
