@@ -38,7 +38,8 @@
 
         return {
             letter: [upped, num].join(''),
-            pc: valid[upped]
+            pc: valid[upped],
+            octave: num
         }
     }
 
@@ -58,8 +59,11 @@
             throw "True or false value only!";
         }
 
-        return [upped, (rest ? "R" : "N")].join('');
-
+        return {
+            dur: [upped, (rest ? "R" : "N")].join(''),
+            ratio: valid[upped],
+            rest: rest
+        }
     }
 
     const Note = function(letterOct = 'c4', duration = "") {
@@ -83,6 +87,18 @@
     Note.prototype.pitchClass = function() {
         return this.letter.pc;
     }
+
+    Note.prototype.getDur = function(){
+      return this.duration.dur;
+    }
+
+    Note.prototype.getRatio = function(){
+      return this.duration.ratio;
+    }
+
+    var cool = new Note("G#");
+    console.log(cool.letter);
+
 
 
 
