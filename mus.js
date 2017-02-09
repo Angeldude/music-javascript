@@ -7,7 +7,7 @@
         }
     }
 
-    const Letter = function(aleph, num = 4) {
+    const pitch = function(aleph, num = 4) {
         var upped = validate(aleph);
         var valid = {
             "C": 0,
@@ -43,7 +43,7 @@
         })
     }
 
-    const Duration = function(dur = "Q", rest = false) {
+    const duration = function(dur = "Q", rest = false) {
         var upped = validate(dur);
         var valid = {
             "W": 1,
@@ -66,26 +66,26 @@
         })
     }
 
-    const Note = function(letterOct = 'c4', duration = "") {
+    const Note = function(letterOct = 'c4', timeVal = "") {
         if (!(this instanceof Note)) {
-            return new Note(letterOct, duration);
+            return new Note(letterOct, timeVal);
         }
 
         var octave = parseInt(letterOct.split(/\D/g).slice(-1));
         var name = letterOct.split(/\d/g)[0];
-        var dur = duration.split('')[0]
-        var rest = duration.toUpperCase().split('').slice(-1)[0]
+        var dur = timeVal.split('')[0]
+        var rest = timeVal.toUpperCase().split('').slice(-1)[0]
 
-        this.letter = Number.isNaN(octave) ? Letter(name) : Letter(name, octave);
-        this.duration = rest === "R" ? Duration(dur, true) : Duration(dur);
+        this.pitch = Number.isNaN(octave) ? pitch(name) : pitch(name, octave);
+        this.duration = rest === "R" ? duration(dur, true) : duration(dur);
     }
 
     Note.prototype.noteName = function() {
-        return this.letter.letter;
+        return this.pitch.letter;
     }
 
     Note.prototype.pitchClass = function() {
-        return this.letter.pc;
+        return this.pitch.pc;
     }
 
     Note.prototype.getDur = function(){
@@ -96,8 +96,18 @@
       return this.duration.ratio;
     }
 
-    var cool = new Note("G#");
-    console.log(cool);
+    Note.prototype.freq = function(){
+      var SEMI = 12;
+      var TUNING = 440;
+      var BASE = 69;
+      var OCTAVE = 2;
+      var pch =  this.pitch.pc;
+      var oct = this.pitch.octave + 1;
+      var calculation = (oct * SEMI) + pch;
+      return TUNING * (OCTAVE**((calculation - BASE) / SEMI));
+    };
+
+  
 
 
 
