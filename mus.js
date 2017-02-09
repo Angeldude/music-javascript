@@ -1,10 +1,14 @@
 (function() {
     "use strict"
 
+    function validate(check){
+      if (check !== undefined) {
+          return check.charAt(0).toUpperCase() + check.slice(1);
+      }
+    }
+
     const Letter = function(aleph, num = 4) {
-        if (aleph !== undefined) {
-            var upped = aleph.charAt(0).toUpperCase() + aleph.slice(1);
-        }
+        var upped = validate(aleph);
         var valid = {
             "C": 0,
             "C#": 1,
@@ -38,8 +42,24 @@
         }
     }
 
-    const Duration = function(dur) {
-      var valid = ['W', 'H', 'Q', 'E', 'S', 'T'];
+    const Duration = function(dur = "Q", rest = false) {
+      var upped = validate(dur);
+      var valid = {
+        "W": 1,
+        "H": 0.5,
+        "Q": 0.25,
+        "E": 0.125,
+        "S": 0.0625
+      };
+
+      if (valid[upped] === undefined) {
+          throw "Not a valid duration!";
+      } else if (typeof rest !== 'boolean') {
+          throw "True or false value only!";
+      }
+
+      return [upped, (rest ? "R" : "N")].join('');
+
     }
 
     const Note = function(letterOct = 'c4', duration) {
