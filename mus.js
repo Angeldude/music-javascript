@@ -36,11 +36,11 @@
             throw "Not a valid Octave number!";
         }
 
-        return {
+        return Object.freeze({
             letter: [upped, num].join(''),
             pc: valid[upped],
             octave: num
-        }
+        })
     }
 
     const Duration = function(dur = "Q", rest = false) {
@@ -59,11 +59,11 @@
             throw "True or false value only!";
         }
 
-        return {
+        return Object.freeze({
             dur: [upped, (rest ? "R" : "N")].join(''),
             ratio: valid[upped],
             rest: rest
-        }
+        })
     }
 
     const Note = function(letterOct = 'c4', duration = "") {
@@ -97,8 +97,7 @@
     }
 
     var cool = new Note("G#");
-    console.log(cool.letter);
-
+    console.log(cool);
 
 
 
