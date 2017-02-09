@@ -1,6 +1,14 @@
 (function() {
     "use strict"
 
+    function zip(arr1, arr2){
+      var result = [];
+      for(let i = 0; i < arr1.length; ++i){
+        result[i] = [arr1[i], arr2[i]]
+      }
+      return result;
+    }
+
     function validate(check) {
         if (check !== undefined) {
             return check.charAt(0).toUpperCase() + check.slice(1);
@@ -107,7 +115,15 @@
       return TUNING * (OCTAVE**((calculation - BASE) / SEMI));
     };
 
-  
+    var melody = ['b4', 'c5', 'e5', 'db4'];
+    var rhythm = ['q','q','s','s'];
+
+    var zipped = zip(melody, rhythm);
+    var phrase = zipped.map(note => {
+      return new Note(note[0], note[1]);
+    })
+
+    console.log(phrase)
 
 
 
