@@ -1,10 +1,10 @@
 (function() {
     "use strict"
 
-    function validate(check){
-      if (check !== undefined) {
-          return check.charAt(0).toUpperCase() + check.slice(1);
-      }
+    function validate(check) {
+        if (check !== undefined) {
+            return check.charAt(0).toUpperCase() + check.slice(1);
+        }
     }
 
     const Letter = function(aleph, num = 4) {
@@ -43,35 +43,37 @@
     }
 
     const Duration = function(dur = "Q", rest = false) {
-      var upped = validate(dur);
-      var valid = {
-        "W": 1,
-        "H": 0.5,
-        "Q": 0.25,
-        "E": 0.125,
-        "S": 0.0625
-      };
+        var upped = validate(dur);
+        var valid = {
+            "W": 1,
+            "H": 0.5,
+            "Q": 0.25,
+            "E": 0.125,
+            "S": 0.0625
+        };
 
-      if (valid[upped] === undefined) {
-          throw "Not a valid duration!";
-      } else if (typeof rest !== 'boolean') {
-          throw "True or false value only!";
-      }
+        if (valid[upped] === undefined) {
+            throw "Not a valid duration!";
+        } else if (typeof rest !== 'boolean') {
+            throw "True or false value only!";
+        }
 
-      return [upped, (rest ? "R" : "N")].join('');
+        return [upped, (rest ? "R" : "N")].join('');
 
     }
 
-    const Note = function(letterOct = 'c4', duration) {
+    const Note = function(letterOct = 'c4', duration = "") {
         if (!(this instanceof Note)) {
             return new Note(letterOct, duration);
         }
 
         var octave = parseInt(letterOct.split(/\D/g).slice(-1));
         var name = letterOct.split(/\d/g)[0];
+        var dur = duration.split('')[0]
+        var rest = duration.toUpperCase().split('').slice(-1)[0]
 
         this.letter = Number.isNaN(octave) ? Letter(name) : Letter(name, octave);
-        this.duration = duration;
+        this.duration = rest === "R" ? Duration(dur, true) : Duration(dur);
     }
 
     Note.prototype.noteName = function() {
@@ -81,8 +83,6 @@
     Note.prototype.pitchClass = function() {
         return this.letter.pc;
     }
-
-
 
 
 
