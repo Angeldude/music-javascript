@@ -115,8 +115,12 @@
       return TUNING * (OCTAVE**((calculation - BASE) / SEMI));
     };
 
-    var melody = ['g', 'c4', 'e', 'db4', 'f#', 'ab', 'c3', 'b3'];
-    var rhythm = ['q','h','s','s','w','q','q','q'];
+    var melody = ['e4', 'f#4', 'b4', 'c#5', 'd5',
+                  'f#5', 'e4', 'c#5', 'b4', 'f#4',
+                  'd5', 'c#5'];
+    var rhythm = ['s', 's', 's', 's', 's',
+                  's', 's', 's', 's', 's',
+                  's', 's'];
 
     var phrase = zip(melody, rhythm).map(note => {
       return new Note(note[0], note[1]);
@@ -129,13 +133,19 @@
     instr.delay = new Tone.FeedbackDelay(0.5).connect(instr.vol);
 
     //  INSTRUMENT SETUP
-    instr.sound = new Tone.PolySynth(1, Tone.Synth).chain(instr.reverb, instr.delay);
+    instr.sound = new Tone.PolySynth(3, Tone.Synth).chain(instr.reverb, instr.delay);
     instr.synth = new Tone.Synth().toMaster();
 
     var pattern = new Tone.Pattern(function(time, note){
-      instr.synth.triggerAttackRelease( note, "4n", time);
+      instr.synth.triggerAttackRelease( note, "16n", time);
+    }, phrase.map(i => i.noteName()), "up");
+
+    var fattern = new Tone.Pattern(function(time, note){
+      instr.sound.triggerAttackRelease( note, "8n", time);
     }, phrase.map(i => i.noteName()), "down");
+
     pattern.start(0)
+    fattern.start(2)
 
     Tone.Transport.bpm.value = 280;
 
