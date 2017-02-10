@@ -124,11 +124,6 @@
       return new Note(note[0], note[1]);
     })
 
-    var toPlay = []
-    phrase.forEach(function(u){
-      toPlay.push(u.noteName());
-    })
-
     var instr = {};
     // EFFECTS SETUP
     instr.vol = new Tone.Gain(0.5).toMaster();
@@ -144,7 +139,7 @@
 
     var pattern = new Tone.Pattern(function(time, note){
       instr.synth.triggerAttackRelease( note, "4n", time);
-    }, toPlay, "alternateDown");
+    }, phrase.map(i => i.noteName()), "down");
     pattern.start(0)
 
     Tone.Transport.bpm.value = 280;
