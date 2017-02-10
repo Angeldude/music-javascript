@@ -132,8 +132,6 @@
     instr.sound = new Tone.PolySynth(1, Tone.Synth).chain(instr.reverb, instr.delay);
     instr.synth = new Tone.Synth().toMaster();
 
-
-
     var pattern = new Tone.Pattern(function(time, note){
       instr.synth.triggerAttackRelease( note, "4n", time);
     }, phrase.map(i => i.noteName()), "down");
