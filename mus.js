@@ -129,7 +129,6 @@
     instr.delay = new Tone.FeedbackDelay(0.5).connect(instr.vol);
 
     //  INSTRUMENT SETUP
-    instr.rand = function(){ return (Math.floor(Math.random() * 7))};
     instr.sound = new Tone.PolySynth(1, Tone.Synth).chain(instr.reverb, instr.delay);
     instr.synth = new Tone.Synth().toMaster();
 
