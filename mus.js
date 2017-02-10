@@ -118,9 +118,7 @@
     var melody = ['g', 'c4', 'e', 'db4', 'f#', 'ab', 'c3', 'b3'];
     var rhythm = ['q','h','s','s','w','q','q','q'];
 
-    var zipped = zip(melody, rhythm);
-
-    var phrase = zipped.map(note => {
+    var phrase = zip(melody, rhythm).map(note => {
       return new Note(note[0], note[1]);
     })
 
