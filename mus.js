@@ -115,21 +115,41 @@
       return TUNING * (OCTAVE**((calculation - BASE) / SEMI));
     };
 
-    var melody = ['b4', 'c5', 'e5', 'db4'];
-    var rhythm = ['q','q','s','s'];
+    var melody = ['g', 'c4', 'e', 'db4', 'f#', 'ab', 'c3', 'b3'];
+    var rhythm = ['q','h','s','s','w','q','q','q'];
 
     var zipped = zip(melody, rhythm);
+
     var phrase = zipped.map(note => {
       return new Note(note[0], note[1]);
     })
 
-    console.log(phrase)
+    var toPlay = []
+    phrase.forEach(function(u){
+      toPlay.push(u.noteName());
+    })
+
+    var instr = {};
+    // EFFECTS SETUP
+    instr.vol = new Tone.Gain(0.5).toMaster();
+    instr.reverb = new Tone.JCReverb(0.4);
+    instr.delay = new Tone.FeedbackDelay(0.5).connect(instr.vol);
+
+    //  INSTRUMENT SETUP
+    instr.rand = function(){ return (Math.floor(Math.random() * 7))};
+    instr.sound = new Tone.PolySynth(1, Tone.Synth).chain(instr.reverb, instr.delay);
+    instr.synth = new Tone.Synth().toMaster();
 
 
 
+    var pattern = new Tone.Pattern(function(time, note){
+      instr.synth.triggerAttackRelease( note, "4n", time);
+    }, toPlay, "alternateDown");
+    pattern.start(0)
 
+    Tone.Transport.bpm.value = 280;
 
-
+    // Tone.Transport.start();
 
 
 })();
